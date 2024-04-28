@@ -52,3 +52,10 @@ tree_model.fit(X_train, y_train)
 y_pred_tree = tree_model.predict(X_val)
 acc_val_tree = np.mean(y_pred_tree == y_val)
 print(f'Decision Tree Validation Accuracy: {acc_val_tree}')
+
+# Model 2: Random Forest
+rf_clf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_clf.fit(X_train, y_train)
+y_pred_rf = rf_clf.predict(X_val)
+acc_val_rf = np.mean(y_pred_rf == y_val)
+print(f'Random Forest Validation Accuracy: {acc_val_rf}')
