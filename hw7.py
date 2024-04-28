@@ -31,3 +31,17 @@ impute_vals = {
 
 df_train.fillna(impute_vals, inplace=True)
 df_val.fillna(impute_vals, inplace=True)
+
+# Encoding of categorical variables
+for col in ['HomePlanet', 'CryoSleep', 'Cabin', 'Destination', 'VIP']:
+    unique_vals = df_train[col].unique()
+    mapping = {k: v for v, k in enumerate(unique_vals)}
+    df_train[col] = df_train[col].map(mapping)
+    df_val[col] = df_val[col].map(mapping).fillna(-1)  # Use -1 for unseen values in validation set
+
+# Prepare feature matrices and target vectors
+features = ['Age', 'RoomService', 'FoodCourt', 'ShoppingMall', 'Spa', 'VRDeck', 'HomePlanet', 'CryoSleep', 'Cabin', 'Destination', 'VIP']
+X_train = df_train[features]
+X_val = df_val[features]
+y_train = df_train['Transported']
+y_val = df_val['Transported']
