@@ -59,3 +59,18 @@ rf_clf.fit(X_train, y_train)
 y_pred_rf = rf_clf.predict(X_val)
 acc_val_rf = np.mean(y_pred_rf == y_val)
 print(f'Random Forest Validation Accuracy: {acc_val_rf}')
+
+# Model 3: XGBoost
+xgb_clf = XGBClassifier(
+    n_estimators=200,
+    max_depth=3,
+    learning_rate=0.1,
+    subsample=0.8,
+    colsample_bytree=0.8,
+    use_label_encoder=False,
+    eval_metric='logloss'
+)
+xgb_clf.fit(X_train, y_train)
+y_pred_xgb = xgb_clf.predict(X_val)
+acc_val_xgb = np.mean(y_pred_xgb == y_val)
+print(f'XGBoost Validation Accuracy: {acc_val_xgb}')
