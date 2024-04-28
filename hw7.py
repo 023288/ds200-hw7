@@ -45,3 +45,10 @@ X_train = df_train[features]
 X_val = df_val[features]
 y_train = df_train['Transported']
 y_val = df_val['Transported']
+
+# Model 1: Decision Tree
+tree_model = DecisionTreeClassifier(random_state=42)
+tree_model.fit(X_train, y_train)
+y_pred_tree = tree_model.predict(X_val)
+acc_val_tree = np.mean(y_pred_tree == y_val)
+print(f'Decision Tree Validation Accuracy: {acc_val_tree}')
