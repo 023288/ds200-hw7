@@ -74,3 +74,25 @@ xgb_clf.fit(X_train, y_train)
 y_pred_xgb = xgb_clf.predict(X_val)
 acc_val_xgb = np.mean(y_pred_xgb == y_val)
 print(f'XGBoost Validation Accuracy: {acc_val_xgb}')
+
+# Impute missing values and also Apply the manual encoding 
+# for the test set using the same values from the training set
+df_test.fillna(impute_vals, inplace=True)
+for col in ['HomePlanet', 'CryoSleep', 'Cabin', 'Destination', 'VIP']:
+    df_test[col] = df_test[col].map(mapping).fillna(-1)  # Use -1 for unseen values in the test set
+
+X_test = df_test[features]
+
+# Making predictions with the best model
+test_predictions = xgb_clf.predict(X_test)
+
+# Create submission
+submission_df = pd.DataFrame({
+    'PassengerId': df_test['PassengerId'],
+    'Transported': test_predictions
+})
+
+submission_df['Transported'] = submission_df['Transported'].astype(bool).map({True: 'True', False: 'False'}) # Convert predictions from boolean to string as required
+submission_path = path + 'submission.csv'
+submission_df.to_csv(submission_path, index=False)
+print(f'Submission file saved to: {submission_path}')
